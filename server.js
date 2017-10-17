@@ -1,8 +1,10 @@
 require("dotenv").config();
 const express = require('express');
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const UsersController = require('./routes/UsersController')
+const ChildController = require('./routes/ChildController')
+const StatsController = require('./routes/StatsController')
 
 mongoose.Promise = global.Promise;
 
@@ -12,18 +14,22 @@ mongoose.connect(process.env.MONGODB_URI,{useMongoClient: true}); //mongodb://lo
 const connection = mongoose.connection;
 
 connection.on('connected', () => {
-  console.log('Mongoose Connected Successfully');    
+  console.log('MongoDB Connected Successfully');    
 }); 
 // If the connection throws an error
 connection.on('error', (err) => {
-  console.log('Mongoose default connection error: ' + err);
+  console.log('Mongoose default connection error: ', err);
 }); 
 
 app.use(express.static(`${__dirname}/client/build`))
-app.use(bodyParser.json());
-app.use('/api/users', UsersController)
+app.use(bodyParser.json())
 
-app.get('/', (req,res) => {≈
+app.use('/api/users', UsersController)
+app.use('/api/children', ChildController)
+app.use('/api/children/:childId/stats', StatsController)
+
+
+app.get('/', (req,res) => {
   res.send('Hello world!')
   res.sendFile(`${__dirname}/client/build/index.html`)
 })

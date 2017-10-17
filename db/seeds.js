@@ -2,7 +2,7 @@ require("dotenv").config();
 const mongoose = require('mongoose')
 mongoose.connect(process.env.MONGODB_URI, {useMongoClient: true})
 mongoose.Promise = global.Promise
-
+const moment = require('moment')
 const { User, Children, Stat } = require('./schema')
 
 const sullTball = new Stat({
@@ -10,12 +10,12 @@ const sullTball = new Stat({
         name:'T-Ball',
         teamName:'Tigers',
         location:'Settingdown Village',
-        rating:'A Natural'
+        playerRating:'A Natural'
     },
     position:{
         one: 'Batting'
     },
-    datePlayed:{},
+    datePlayed:'2017-01-10',
     description: 'Working on the fundamentals. If he picks them up as quick as he has everything else, we might have a pro on our hands!' 
 })
 
@@ -23,27 +23,29 @@ const liamBaseball = new Stat({
     sport:{
         name:'Baseball',
         teamName: 'Coal Mountain White Raiders',
-        loacation:'Coal Mountain Park',
-        rating:'Great!',
+        location:'Coal Mountain Park',
+        playerRating:'Great!',
     },
     position:{
         one: 'Batter',
         two: 'Left-Center'
     },
-    datePlayed:{},
+    datePlayed: '2017-01-10',
     description: 'Great Weather. The White Raiders had a tough start against the Purple Raiders but a 4th inning flyer from Liam Calhoun sealed the Purple Raiders fate.'  
 })
 
 const Sullivan = new Children({
-    name: 'Sullivan Calhoun',
+    firstName: 'Sullivan',
+    lastName: 'Calhoun',
     age: 5,
     height:"3.11'",
     weight: "47", 
-    stats:[]
+    stats:[sullTball]
 })
 
 const Liam = new Children({
-    name: 'Liam Calhoun',
+    firstName: 'Liam',
+    lastName: 'Calhoun',
     age: 8,
     height: "4.2'",
     weight: "49.7",
@@ -53,9 +55,18 @@ const Liam = new Children({
 const Mom = new User({
   userName: 'dbaby',
   password: 'livin&lovin',
-  name: 'Donna Calhoun',
-  address: '5380 Bucknell Trace, Cumming, GA 30028',
-  children:[Liam, Sullivan] 
+  firstName: 'Donna',
+  lastName: 'Calhoun',
+  address: '5380 Bucknell Trace, Cumming, GA 30028'
+  
+})
+const Dad = new User({
+    userName: 'dadad',
+    password: 'heademupandmoveemout',
+    firstName: 'Robert',
+    lastName: 'Calhoun',
+     address: '5380 Bucknell Trace, Cumming, GA 30028'
+   
 })
 
 
@@ -66,20 +77,19 @@ const Mom = new User({
 User.remove({})
 .then(() => Mom.save())
 .then(() => console.log('Successful Save'))
-.then(() => mongoose.connection.close())
 
+
+.then(() => Dad.save())
+.then(() => console.log('Successful Save'))
+
+Children.remove({})
 .then(() => Liam.save())
 .then(() => console.log('Successful Save'))
-.then(() => mongoose.connection.close())
+
 
 .then(() => Sullivan.save())
 .then(() => console.log('Successful Save'))
-.then(() => mongoose.connection.close())
 
-.then(() => liamBaseball.save())
-.then(() => console.log('Successful Save'))
-.then(() => mongoose.connection.close())
 
-.then(() => sullTball.save())
-.then(() => console.log('Successful Save'))
+
 .then(() => mongoose.connection.close())

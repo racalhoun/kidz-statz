@@ -1,11 +1,12 @@
 const mongoose = require('mongoose')
+const moment = require('moment')
 
 const statSchema = mongoose.Schema({
     sport:{
         name:String,
         teamName: String,
         location: String,
-        rating: String
+        playerRating: String
         
     },
     position:{
@@ -15,7 +16,7 @@ const statSchema = mongoose.Schema({
         required: false
     },
     datePlayed:{
-        type:Date,
+        type:String,
         default: Date.now
     },
     description:{
@@ -25,7 +26,8 @@ const statSchema = mongoose.Schema({
 })
 
 const childrenSchema = mongoose.Schema({
-    name: String,
+    firstName: String,
+    lastName: String,
     age: Number,
     height: String,
     weight: String,
@@ -35,9 +37,10 @@ const childrenSchema = mongoose.Schema({
 const userSchema = mongoose.Schema({
     userName: String,
     password: String,
-    name: String,
+    firstName: String,
+    lastName: String,
     address: String,
-    children:[childrenSchema]
+    
 })
 
 
